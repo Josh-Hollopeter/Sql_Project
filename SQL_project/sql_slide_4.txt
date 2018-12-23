@@ -1,0 +1,6 @@
+SELECT COUNT (DISTINCT r.rental_id) ,s.staff_id, concat (s.first_name,' ',
+s.last_name) as name
+FROM staff s
+JOIN rental r
+ON   s.staff_id = r.staff_id
+GROUP BY s.staff_id,name

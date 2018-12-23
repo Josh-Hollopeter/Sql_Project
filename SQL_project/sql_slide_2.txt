@@ -1,0 +1,22 @@
+this is the query for slide 2, left movie title in SUB select clause
+in case title is needed later
+
+SELECT SUM (total_rental_amt) AS total_rental_amt, category
+FROM
+(SELECT SUM ( p.amount) AS total_rental_amt, f.title movie_title,  c.name category
+FROM     payment p
+JOIN       rental r
+ON          r.rental_id = p.rental_id
+JOIN       inventory i
+ON          i.inventory_id = r.inventory_id
+RIGHT JOIN film f
+ON         f.film_id = i.film_id
+JOIN       film_category fc
+ON         f.film_id = fc.film_id
+RIGHT JOIN category c
+ON         fc.category_id = c.category_id
+GROUP BY   movie_title, category
+ )
+SUB
+GROUP BY  category
+ORDER BY  total_rental_amt DESC

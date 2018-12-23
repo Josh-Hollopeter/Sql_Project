@@ -1,0 +1,20 @@
+
+
+SELECT COUNT (film_id) as rental_count, title, name as category
+FROM
+(SELECT c.name ,f.title, f.film_id
+FROM    film f
+JOIN    film_category fc
+ON      fc.film_id = f.film_id
+JOIN    category c
+ON      fc.category_id = c.category_id
+JOIN    inventory i
+ON      i.film_id = f.film_id
+JOIN    rental r
+ON      r.inventory_id = i.inventory_id
+WHERE   name LIKE  'Animation' OR name LIKE 'Comedy' OR name LIKE 'Children'
+OR      name LIKE 'classics' OR name LIKE 'Family' OR name LIKE 'Music'
+)
+SUB
+GROUP BY film_id, title, category
+ORDER BY category, title

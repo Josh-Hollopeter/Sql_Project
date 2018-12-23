@@ -1,0 +1,16 @@
+SELECT email, past_due /customer_id AS past_due_movies, title
+FROM
+(SELECT  f.title, c.customer_id, c.email,
+SUM    ( c.customer_id) OVER (PARTITION BY c.customer_id) AS past_due
+FROM     rental r
+JOIN     customer c
+ON       r.customer_id = c.customer_id
+JOIN     inventory i
+ON       r.inventory_id = i.inventory_id
+JOIN     film f
+ON       i.film_id = f.film_id
+WHERE    r.return_date IS NULL
+GROUP BY f.title, c.customer_id,c.email
+ORDER BY customer_id)
+SUB
+ORDER BY email desc
